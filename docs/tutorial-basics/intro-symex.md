@@ -25,7 +25,7 @@ import Snippet4 from "@site/src/components/Samples/Fibonacci/Snippet4"
 
 # Symbolic execution in a nutshell
 
-In this chapter, we are going to learn how to configure the **BINSEC** symbolic execution engine to explore the different behaviors of small binary program.
+In this chapter, we are going to learn how to configure the **BINSEC** symbolic execution engine to explore the different behaviors of small binary programs.
 
 ## <Icon icon="fa-solid fa-backward" /> Previously on Fibonacci
 
@@ -65,7 +65,7 @@ Symbol table '.symtab' contains 5 entries:
 
 ## <Icon icon="fa-solid fa-circle-play" /> Concrete emulation
 
-Putting aside the *Symbolic* in *Symbolic execution* ends up with straight execution: not the fastest nor the most robust, but enough to play with small machine code, even if it does not match your processor.
+Putting aside the *Symbolic* in *Symbolic execution* ends up with straight (concrete) execution: not the fastest nor the most robust, but enough to play with small machine code, even if it does not match the processor of your computer.
 
 Here, we can evaluate the computation of the Fibonacci sequence of the eponymous function.
 ```c
@@ -287,15 +287,15 @@ As consequences:
 
 :::tip
 
-Here, we use an assumption to reduce the valid range of value for `n` . It should be the preferred way to limits the search space of the analysis.
+Here, we use an assumption to reduce the valid range of value for `n` . It should be the preferred way to limit the search space of the analysis.
 
 :::
 
 ## <Icon icon="fa-solid fa-circle-play" /> Bounded verification
 
-Last but not least, if we are able to exhaustively explore all the paths of a program up to a given bound, we can all along verify nothing wrong will happen under this scope.
+Last but not least, if we are able to exhaustively explore all the paths of a program up to a given bound, we can all along verify that nothing wrong will happen under this scope.
 
-For instance, we may wonder what is the upper limit for `n` until our fibonacci computation is correct. Indeed, the fibonacci sequence grows exponentially while the implementation use fixed 64-bit values.
+For instance, we may wonder what is the upper limit of `n` for which our fibonacci computation is correct. Indeed, the fibonacci sequence grows exponentially while the implementation use fixed 64-bit values.
 
 :::info
 

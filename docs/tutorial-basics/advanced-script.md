@@ -18,7 +18,7 @@ import Snippet1 from "@site/src/components/Samples/Level1/Snippet1"
 
 Software is not made up of a unique function, and no longer of a unique binary file.
 Software interacts with environment and often depends of several libraries. It is now
-time to learn how to deal with dynamically function, using DBA function mocks.
+time to learn how to deal with external (*dynamically linked*) functions, using DBA function stubs.
 
 In this chapter, we will use the simple challenge named `level1` <a href={useBaseUrl('/bin/level1')} download><Icon icon="fa-solid fa-file-arrow-down" /></a> which comes from the site [crackmes.one](https://crackmes.one/crackme/646627a933c5d439389131d9).  
 
@@ -59,7 +59,7 @@ Better luck next time. :(
 ```
 
 As we fail to provide the good one, it simply prompts the message `Better luck next time. :(` before exiting.
-If we look at the strings in the `.rodata` section, we can guess that the success is rewarded by the prompt `You are correct :)`.
+If we look at the strings in the `.rodata` section (`0x2000`), we can guess that the success is rewarded by the prompt `You are correct :)`.
 Thus, our goal will be to find the password that lead the program to call a printing function (any of `putc`, `puts`, `printf`, etc.) with the string `You are correct :)` as argument.
 
 Looking at the dynamic symbol table shows us the dynamically linked
@@ -84,7 +84,7 @@ Symbol table '.dynsym' contains 8 entries:
 
 The ELF format use the special section `.plt`, for *Procedure Linkage Table*, in order to call the dynamically loaded functions.
 
-The caller first jump to a fixed entry in the PLT that play the role of a trampoline and dispatch to the actual function implementation.
+The caller first jumps to a fixed entry in the PLT that plays the role of a trampoline and that dispatchs to the actual function implementation.
 
 The disassembly sometimes refers to the pseudo symbol `@plt` to identifies an entry in the PLT.
 
@@ -109,11 +109,11 @@ end
 
 :::warning
 
-Even if we use a function name, the `replace` statement does not replace the function itself, it just hook the address of the symbol that is used to be the function entry point.
+Even if we use a function name, the `replace` statement does not replace the function itself, it just hook the address of the symbol (which is used to be the function entrypoint).
 
 :::
 
-The function `isoc99_scanf` can be more tricky to model, but we do not have to implement all the behaviors of the original function. Here, it seems that the scan is only called once in the `main` function (`0x1222`). It has a concrete format specifier `%64s` which means it will read a string of maximum 64 bytes.
+The function `isoc99_scanf` can be more tricky to model, but we do not have to implement all the behaviors of the original function. Here, it seems that the scan is only called once in the `main` function (`0x1222`). It has a concrete format specifier `%64s` (`0x2032` in `.rodata`) which means it will read a string of maximum 64 bytes.
 
 We can model it with the following script.
 
@@ -129,7 +129,7 @@ end
 The important points here are:
 - **BINSEC** can match the function arguments according to the calling convention for us (e.g. `format` instead of `rdi` and `ptr` instead of `rsi`);
 - we put an `assert` to make sure our prior guess is correct: the analysis will raise an error if the function is called with another argument than`"%64s"`;
-- the main memory of the program is accessed via the builtin `@` array. Using another name will automatically declare a new symbolic array that we can use to model *string'like* object line command line arguments or files. Here, we are (*wisely*) chose the name `stdin` to model the password input entered by the user.
+- the main memory of the program is accessed via the builtin `@` array. Using another name will automatically declare a new symbolic array that we can use to model *string'like* objects like command line arguments or files. Here, we are (*wisely*) chose the name `stdin` to model the password input entered by the user.
 
 
 :::warning
@@ -141,7 +141,7 @@ Straight assignment of a new values (`:=`) will not affect the original argument
 
 :::note
 
-The `z` at the end of `"%64s"z` stands for *zero terminated string* and is a shortcut for `"%64s\x000"`.
+The `z` at the end of `"%64s"z` stands for *zero terminated string* and is a shortcut for `"%64s\x00"`.
 
 :::
 
@@ -201,15 +201,15 @@ So, here we use 2 initialization commands to automatically concretize:
 
 :::tip
 
-It is always safe to load read-only section like `.rodata from the file. It is also highly recommended  to concretize or restrict the range of the stack and other pointers to help the symbolic engine to efficiently reason on memory.
+It is always safe to load read-only section like `.rodata` from the file. It is also highly recommended  to concretize or restrict the range of the stack and other pointers to help the symbolic engine to efficiently reason on memory.
 
 :::
 
 ## Non replacement hook
 
-Hook are not limited to replacement and can also be used to instrument the code while still retaining the original behavior.
+Hooks are not limited to replacement and can also be used to instrument the code while still retaining the original behavior.
 
-In fact, we already used hooks since most script command are actually a syntactic sugar around the hook mechanism.
+In fact, we already used hooks since most of the script commands are actually a syntactic sugar around the hook mechanism.
 
 Thus, both versions are equivalent in the following code.
 

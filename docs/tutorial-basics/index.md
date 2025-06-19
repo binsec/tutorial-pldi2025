@@ -6,9 +6,9 @@ sidebar_label: Tutorial - Basics
 
 # Introduction
 
-**BINSEC** is a binary level analysis platform developed at the [CEA List](http://www-list.cea.fr/en/) institute of [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) in collaboration with [Verimag](https://www-verimag.imag.fr/?lang=en) and [LORIA](https://www.loria.fr/en/).
+**BINSEC** is a binary level code analysis platform developed at [CEA List](http://www-list.cea.fr/en/) ([Université Paris-Saclay](https://www.universite-paris-saclay.fr/en)) in collaboration with [UGA](https://www.univ-grenoble-alpes.fr/english/) and [LORIA](https://www.loria.fr/en/).
 
-It takes a binary file containing machine code instructions and can perform symbolic execution on them.
+**BINSEC** takes as input a binary file containing machine code instructions and can perform symbolic execution ("*under-approximated semantic exploration*") over it.
 
 This tutorial covers the basic usages of the **BINSEC** symbolic execution engine over small binary executables.
 

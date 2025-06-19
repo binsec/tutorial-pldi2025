@@ -23,7 +23,7 @@ import { fibonacci, disassembly, hexdump, objdump } from "@site/src/components/S
 
 # Reverse in a nutshell
 
-In this chapter, we are going to cover the basics of reverse-engineering an executable file.
+In this preparatory chapter, we are going to cover the basics of reverse-engineering an executable file. If you are already familiar with binary file format, you can skip and directly go to the [next chapter](intro-symex.md).  
 
 We are going to use the tiny ELF executable `fibonacci` <a href={useBaseUrl("/bin/fibonacci")} download><Icon icon="fa-solid fa-file-arrow-down" /></a> as a running example, paving the way to the next chapter.
 
