@@ -8,6 +8,9 @@ import Tabs from "@theme/Tabs";
 import Icon from "@site/src/components/Icon";
 import Toggle from "@site/src/components/Toggle";
 
+import { Chrome, Edge, Firefox, Safari } from '@site/src/components/Browser';
+
+
 
 export function Sample({ Model, value, width, height, filename, binary, noinfo, trace, ...props }) {
 
@@ -55,6 +58,13 @@ export function Sample({ Model, value, width, height, filename, binary, noinfo, 
                         setRunning(false);
                         self['main-worker-ready'] = true;
                         break;
+                    case 'status':
+                        if (e.data[1] == 'undefined') {
+                            output.push(<Admonition type="warning" title="Not yet">
+                                <b>BINSEC</b> modules are not yet ready. If you just reloaded the page, try again in a few seconds.<br />Otherwise, something may have gone wrong. <b>BINSEC</b> compilation to Web Assembly is still experimental, consider using the native version or maybe try with  another browser (<Chrome /> Chrome, <Edge /> Edge, <Firefox /> Firefox or <Safari /> Safari).
+                            </Admonition>);
+                            break;
+                        }
                     default:
                         output.push(<span style={{ color: 'var(--ifm-color-danger)' }}>Unexpected message from worker.<br /></span>);
                 }

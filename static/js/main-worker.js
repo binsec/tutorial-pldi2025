@@ -7,6 +7,14 @@
     })(console[verb].bind(console), verb);
 });
 
+onunhandledrejection = (event) => {
+    console.dir(event.reason);
+    if (event.reason instanceof WebAssembly.CompileError) {
+        importScripts('main.bc.js');
+        event.preventDefault();
+    }
+};
+
 importScripts('bitwuzla.js');
 importScripts('unisim.js');
 importScripts('main.bc.wasm.js');
@@ -16,6 +24,10 @@ Unisim().then((unisim) => {
 })
 
 onmessage = async (e) => {
+    if (typeof binsec === 'undefined') {
+        postMessage(['status', 'undefined']);
+        return;
+    }
     switch (e.data[0]) {
         case 'version':
             postMessage(['version', binsec.version()]);

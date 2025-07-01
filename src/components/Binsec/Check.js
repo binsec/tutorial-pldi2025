@@ -25,6 +25,13 @@ export function Check() {
                             </div>);
                             break;
                         }
+                    case 'status':
+                        if (e.data[1] === 'undefined') {
+                            setOutput(<Admonition type="warning" title="Not yet">
+                            <b>BINSEC</b> modules are not yet ready. If you just reloaded the page, try again in a few seconds.<br/>Otherwise, something may have gone wrong. <b>BINSEC</b> compilation to Web Assembly is still experimental, consider using the native version or maybe try with  another browser (<Chrome/> Chrome, <Edge/> Edge, <Firefox/> Firefox or <Safari/> Safari). 
+                        </Admonition>);
+                            break;
+                        }
                     default:
                         setOutput(<Admonition type="danger" title="An error occured">
                             <b>BINSEC</b> compilation to Web Assembly is still experimental and has never been tested on your browser. Prefer using one of the following: <Chrome/> Chrome, <Edge/> Edge, <Firefox/> Firefox or <Safari/> Safari.

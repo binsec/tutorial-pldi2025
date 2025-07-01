@@ -1,10 +1,11 @@
 import { useState } from "react";
 
+import Admonition from '@theme/Admonition';
 
 import Icon from "@site/src/components/Icon";
 
 import Disassembly from "@site/src/components/Disassembly";
-
+import { Chrome, Edge, Firefox, Safari } from '@site/src/components/Browser';
 
 export function Disassemble({ binary }) {
 
@@ -21,6 +22,13 @@ export function Disassemble({ binary }) {
                             <Disassembly source={JSON.parse(e.data[1])} />
                         )
                         break;
+                    case 'status':
+                        if (e.data[1] == 'undefined') {
+                            setOutput(<Admonition type="warning" title="Not yet">
+                                <b>BINSEC</b> modules are not yet ready. If you just reloaded the page, try again in a few seconds.<br />Otherwise, something may have gone wrong. <b>BINSEC</b> compilation to Web Assembly is still experimental, consider using the native version or maybe try with  another browser (<Chrome /> Chrome, <Edge /> Edge, <Firefox /> Firefox or <Safari /> Safari).
+                            </Admonition>);
+                            break;
+                        }
                     default:
                         setOutput(<pre>
                             <span style={{ color: 'var(--ifm-color-danger)' }}>Unexpected message from worker.<br /></span>
