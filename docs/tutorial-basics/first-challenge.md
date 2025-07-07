@@ -24,7 +24,13 @@ In this session, your mission will be to solve the small reverse-engineering cha
 The function `magic` to analyze has the following prototype.
 ```c
 int magic (int);
-``` 
+```
+<details>
+<summary>Its logic checks whether the given input is equal to the expected magic number.</summary>
+
+  Your goal is to find the unique input that validates the challenge.
+  The function returns `true` (i.e. *non-zero value*) when called with the right magic number, and `false` (i.e. `0`) otherwise.
+</details>
 
 ## Hexdump
 
